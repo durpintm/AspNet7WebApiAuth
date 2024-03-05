@@ -125,5 +125,37 @@ namespace AspNet7WebApiAuth.Controllers
             string token = new JwtSecurityTokenHandler().WriteToken(tokenObject);
             return token;
         }
+
+        // Route => make user => admin
+        [HttpPost]
+        [Route("make-admin")]
+        public async Task<IActionResult> MakeAdmin([FromBody] UpdatePermissionDTO updatePermissionDTO)
+        {
+            var user = await _userManager.FindByNameAsync(updatePermissionDTO.UserName);
+
+            if (user is null)
+                return BadRequest("Invalid User name!!");
+
+            await _userManager.AddToRoleAsync(user, StaticUserRoles.ADMIN);
+
+            return Ok("User is now an ADMIN");
+
+        }
+
+        // Route => make user => owner
+        [HttpPost]
+        [Route("make-owner")]
+        public async Task<IActionResult> MakeOwner([FromBody] UpdatePermissionDTO updatePermissionDTO)
+        {
+            var user = await _userManager.FindByNameAsync(updatePermissionDTO.UserName);
+
+            if (user is null)
+                return BadRequest("Invalid User name!!");
+
+            await _userManager.AddToRoleAsync(user, StaticUserRoles.OWNER);
+
+            return Ok("User is now an Owner");
+
+        }
     }
 }
