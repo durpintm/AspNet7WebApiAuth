@@ -1,5 +1,7 @@
 using AspNet7WebApiAuth.Core.DbContext;
 using AspNet7WebApiAuth.Core.Entities;
+using AspNet7WebApiAuth.Core.Interfaces;
+using AspNet7WebApiAuth.Core.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -59,8 +61,11 @@ builder.Services
         };
     });
 
-// pipeline
 
+// Inject app dependencies (Dependency Injection)
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+// pipeline
 
 var app = builder.Build();
 
